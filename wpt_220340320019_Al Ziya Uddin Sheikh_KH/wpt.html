@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script>
+        $(() => {
+            $("#bookid").blur(function () {
+                console.log("jquery works");
+
+                let y =$("#bookid").val();
+                $.ajax({
+                    type: "get",
+                    dataType: "json",
+                    url: "http://localhost:8081/poc2",
+                    data: { bookid: y },
+                    success: function (output) {
+                         if(output.status === true ){
+                            $("#msg").text("bookid  found");
+                            $("#bookname").val(output.rows[0].bookname);
+                            $("#price").val(output.rows[0].price);
+                           
+
+                         }else{
+                            $("#msg").text("bookid not found");
+                            $("#bookname").val("");
+                            $("#price").val("");
+                            
+
+                        }
+
+                    },
+                    error: function (e) {
+                        alert('we have trouble ' + JSON.stringify(e));
+                    }
+
+
+
+                });
+
+
+
+
+
+
+
+
+            });
+
+            //---------------------------------------------
+
+
+            $("#update").click(function () {
+                console.log("jquery works");
+
+                //let y ={bookid : $("#bookid").val(),bookname : $("#bookname").val(),price : $("#price").val()};
+               // console.log(y);
+                            
+                $.ajax({
+                    type: "get",
+                    dataType: "json",
+                    url: "http://localhost:8081/update",
+                    data: { input : {bookid : $("#bookid").val(), bookname : $("#bookname").val(),price : $("#price").val()} },
+                   // data: { x:y},
+                    success: function (output) {
+                         if(output.status === true ){
+                            $("#msg").text("book is updated ");
+                            // $("#bookname").val(output.rows[0].bookname);
+                            // $("#price").val(output.rows[0].price);
+                           
+
+                         }else{
+                            $("#msg").text("bookid is not updated");
+                         
+
+                        }
+                        $("#bookname").val("");
+                            $("#price").val("");
+                            
+
+                    },
+                    error: function (e) {
+                        alert('we have trouble ' + JSON.stringify(e));
+                    }
+
+
+
+                });
+
+                //----------------------------------------
+
+
+
+
+
+
+
+
+            });
+
+
+            
+
+
+
+        });
+    </script>
+</head>
+
+<body>
+    <span>Book Id </span>
+    <input type="number" id="bookid" name="bookid" placeholder="bookid" /> <span id="msg">message(what happened book added or not added) </span><br /><br />
+    <span>Book name </span><input type="text" id="bookname" name="bookname" placeholder="bookname" /><br /><br />
+    <span>Price </span><input type="number" id="price" name="price" placeholder="price" /><br /><br />
+    <input type="button" value="update" id="update" />
+</body>
+
+</html>
